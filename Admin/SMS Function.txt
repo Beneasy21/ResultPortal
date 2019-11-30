@@ -1,0 +1,15 @@
+='For SMS'!$B$9&CHAR(10)&
+ 'For SMS'!$C$8&" "&'For SMS'!C9&" "&'For SMS'!D9&CHAR(10)&
+ 'For SMS'!$E$8&" "&'For SMS'!E9&" "&'For SMS'!F9&CHAR(10)&
+ 'For SMS'!$G$8&" "&'For SMS'!G9&" "&'For SMS'!H9&CHAR(10)&
+ 'For SMS'!$I$8&" "&'For SMS'!I9&" "&'For SMS'!J9&CHAR(10)&
+ 'For SMS'!$K$8&" "&'For SMS'!K9&" "&'For SMS'!L9&CHAR(10)&
+ 'For SMS'!$M$8&" "&'For SMS'!M9&" "&'For SMS'!N9&CHAR(10)&
+ 'For SMS'!$O$8&" "&'For SMS'!O9&" "&'For SMS'!P9&CHAR(10)&
+ 'For SMS'!$Q$8&" "&'For SMS'!Q9&" "&'For SMS'!R9&CHAR(10)&
+ 'For SMS'!$S$8&" "&'For SMS'!S9&" "&'For SMS'!T9&CHAR(10)&
+ 'For SMS'!$U$8&" "&'For SMS'!U9&" "&'For SMS'!V9&CHAR(10)&
+ 'For SMS'!$W$8&" "&'For SMS'!W9&" "&'For SMS'!X9&CHAR(10)&
+ 'For SMS'!$Y$8&" "&'For SMS'!Y9&" "&'For SMS'!Z9&CHAR(10)&
+ 'For SMS'!$AA$8&" "&'For SMS'!AA9&" "&'For SMS'!AB9&CHAR(10)&
+ 'For SMS'!$AC$8&" "&'For SMS'!AC9&" "&'For SMS'!AD9

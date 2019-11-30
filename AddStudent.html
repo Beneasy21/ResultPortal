@@ -1,0 +1,90 @@
+<html>
+<head>
+<script>
+</script>
+
+</head>
+
+
+<style type="text/css">
+
+</style>
+<body>
+<br><br><br>
+
+<br><br>
+<center><fieldset style="width:50%">
+<form  name="testform" method="post" enctype="multipart/form-data" action="addStudent.php">
+<table width="600">
+	<tr>
+		<td align = "center"><img src = "images/header.png" width="500"></td>
+	</tr>
+	<tr>
+		<td><center><font color="#660066" size="+3">Add Student</font></center></td>
+	</tr>
+	<tr>
+		<td>
+			<table align="center" border=1 width="450">
+			<tr>
+				<td>Adm No:</td><td><input type="text" name="studId"</td>
+			</tr>
+			<tr>
+				<td>Student's Name:</td><td><input type="text" name="studName"></td>
+			</tr>
+			<tr><td width="111"><span class="style3">Sex:</span></td>
+			<td width="264"><select name="sex" onChange="showUser(this.value)">
+			  <option value=''> </option>
+			  <option value="male">Male</option>
+			  <option value="female">Female</option>
+			 
+			</select></td>
+			</tr>
+
+			<tr><td width="111"><span class="style3">Class:</span></td>
+			<td width="264"><select name="currentClass" onChange="showUser(this.value)" required="required">
+			  <option value=''> </option>
+			  <option value='JSS 1'>JSS 1</option>
+			  <option value='JSS 2'>JSS 2</option>
+			  <option value='JSS 3'>JSS 3</option>
+			  <option value='SSS 1'>SSS 1</option>
+			  <option value='SSS 2'>SSS 2</option>
+			  <option value='SSS 3'>SSS 3</option>
+			  
+			 </select></td>
+			</tr>
+
+			<tr><td width="111"><span class="style3">Arm:</span></td>
+			<td width="264"><select name="arm" onChange="showUser(this.value)" required="required">
+			  <option value=''> </option>
+			  <option value='Gold'>Gold</option>
+			  <option value='Silver'>Silver</option>
+			  <option value='Diamond'>Diamond</option>
+			  <option value='Ruby'>Ruby</option>
+			  <option value='Opal'>Opal</option>
+			  <option value='Emerald'>Emerald</option>
+			  <option value='Topaz'>Topaz</option>
+			  <option value='Pearl'>Pearl</option>
+			  <option value='Coral'>Coral</option>
+			  <option value='Beryl'>Beryl</option>
+			  <option value='Gold Ext'>Gold Ext</option>
+			  <option value='Silver Ext'>Silver Ext</option>
+			  <option value='Diamond Ext'>Diamond Ext</option>
+			  <option value='Ruby Ext'>Ruby Ext</option>
+			  <option value='Opal Ext'>Opal Ext</option>
+			  <option value='Emerald Ext'>Emerald Ext</option>
+			  <option value='Topaz Ext'>Topaz Ext</option>
+			  <option value='Pearl Ext'>Pearl Ext</option>
+			  <option value='Coral Ext'>Coral Ext</option>
+			  <option value='Beryl Ext' >Beryl Ext</option>
+			  
+			 </select></td>
+			</tr>
+
+			<tr><td  colspan="2" align="center"><input name="sub" type="submit" value="Submit"></td></tr>
+			</table>
+		</td>
+		</tr>
+		</table>
+</form>
+</fieldset></center>
+</body>

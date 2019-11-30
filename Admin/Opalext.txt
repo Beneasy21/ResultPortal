@@ -1,0 +1,1 @@
+UPDATE `results` SET `arm`= 'Opal'  WHERE `arm`= 'Opal Ext' AND `resClass` = 'SSS 2'
