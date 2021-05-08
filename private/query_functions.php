@@ -338,13 +338,13 @@ function fetch_one_student($RegNo){
 function fetch_a_student_for_batch($RegNo){
 	global $db;
 	
-	$sql = "SELECT s.id,s.studId,s.studName,s.house,s.sex,tc.classsName,ta.armName,tay.acadYrName,s.arm   
+	$sql = "SELECT *
 	FROM students s
 	INNER JOIN tblClass tc ON s.currentClass = tc.classsId 
 	INNER JOIN tblarm ta ON s.arm = ta.armId 
 	INNER JOIN tblacadYr tay ON s.acadYr = tay.AcadYrId
 	where s.studId = '".$RegNo."'";
-	echo $sql;
+	//echo $sql;
 	$result = mysqli_query($db,$sql);
 	confirm_result_set($result);
 	check_empty_record($result);
@@ -374,7 +374,7 @@ function fetch_a_studid_from_result($Session, $Class, $Arm){
 	$sql = "Select distinct studId 
 			FROM results 
 			WHERE AcadYr = '$Session'  AND resclass = '$Class' AND arm = '$Arm'";
-	echo $sql;
+//	echo $sql;
 	$result = mysqli_query($db,$sql);
 	confirm_result_set($result);
 	check_empty_record($result);
@@ -468,7 +468,7 @@ function fetch_all_acadYr(){
 function fetch_annual_result($RegNo, $Session){
 	global $db;
 
-	$sql = "SELECT r1.`subjects`,ts.subName,
+	$sql = "SELECT r1.`subjects`,
 			MAX(CASE WHEN r1.`term` = '1' THEN r1.`examTotal` END) 'First',
 			MAX(CASE WHEN r1.`term` = '2' THEN r1.`examTotal` END) 'Second',
 			MAX(CASE WHEN r1.`term` = '3' THEN r1.`examTotal` END) 'Third',
@@ -477,7 +477,6 @@ function fetch_annual_result($RegNo, $Session){
 			AVG(r2.`examTotal`) as Avgr
 			FROM `results` r1
 			LEFT OUTER JOIN `results` r2 ON r2.`subjects` = r1.`subjects`
-			INNER JOIN tblsubjects ts ON r1.subjects = ts.subId
 			WHERE r1.`studId` = '".$RegNo."' AND r2.`resClass` = r1.`resClass` AND r1.acadYr = '".$Session."'
 			GROUP BY r1.`subjects`
 			ORDER BY r1.`subjects` ASC";

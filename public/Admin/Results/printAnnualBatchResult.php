@@ -28,12 +28,16 @@ $Class = h($_POST["studClass"]); //Storing Class in $Class variable.
 
 			while($row = mysqli_fetch_array($results))
 			{
+				$acadyrN = find_acadYrName($row['acadYr']);
+				$klass = find_className($row['currentClass']);
+				$arm = find_armName($row['arm']);
+
 				$Name=$row['studName'];
 				$Sex=$row['sex'];
 				$AdmNo = $row["studId"];			
-				$Class = $row["classsName"];
-				$Arm = $row["armName"];
-				$AcadYr = $row["acadYrName"];
+				$Class = $klass["classsName"];
+				$Arm = $arm["armName"];
+				$AcadYr = $acadyrN["acadYrName"];
 			}
 ?>
 						
@@ -94,6 +98,7 @@ $Class = h($_POST["studClass"]); //Storing Class in $Class variable.
 						
 			foreach ($result_array as $row) 
 			{
+				$sub = find_subjectName($row['subjects']);
 				$FirstTermObt = $SecondTermObt = $ThirdTermObt = 100;
 				$TotalObt = $FirstTermObt + $SecondTermObt + $ThirdTermObt;
 				$Total = $row["First"] + $row["Second"] + $row["Third"];
@@ -101,7 +106,7 @@ $Class = h($_POST["studClass"]); //Storing Class in $Class variable.
 				$AverageObt = round($Total / 3, 2);
 				?>
 				<tr bgcolor="#B8DEE9" class="style3">
-					<td><strong><?= $row["subName"] ?></td>
+					<td><strong><?= $sub["subName"] ?></td>
 					<td><font size="5"><?= $FirstTermObt ?></font></td>
 					<td><font size="5"><?= $row["First"] ?></font></td>
 					<td><font size="5"><?= $SecondTermObt ?></font></td>

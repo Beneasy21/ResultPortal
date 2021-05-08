@@ -9,7 +9,7 @@
 	<div class="w-50 p-3 mx-auto shadow-lg rounded">
 		<div class="row pt-10">
 			<div class="col mx-auto">
-				<img class="w-100" src="images/header.png" width="600" height="100"><hr>
+				<img class="w-100" src="<?php echo url_for('/images/Header.png');?>" width="600" height="100"><hr>
 			</div>
 		</div>
 		<div class="row">
@@ -74,7 +74,7 @@
 				<a href="<?php echo url_for('Admin/results/toannualBroadsheetReal.php');?>" class="btn btn-dark btn-sm mr-2 btn-block option-button" style="white-space:normal !important; word-wrap:break-word; word-break:normal" role="button">Print Annual Broadsheet</a>
 			</div>			
 			<div class="col-4">
-				<a href="viewResAbove.php" class="btn btn-dark btn-sm mr-2 btn-block option-button" style="white-space:normal !important; word-wrap:break-word; word-break:normal" role="button">View Result with Errors</a>
+				<a href="viewResAbove.php" class="btn btn-dark btn-sm mr-2 btn-block option-button" style="white-space:normal !important; word-wrap:break-word; word-break:normal" role="button">Upload results</a>
 			</div>
 		</div>
 		<hr>
