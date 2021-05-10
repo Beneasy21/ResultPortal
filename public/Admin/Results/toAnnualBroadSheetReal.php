@@ -1,48 +1,43 @@
 <?php  
 	require_once('../../../private/initialize.php');
+
+	$page_title = 'Command: Broadsheet';
+	include(SHARED_PATH . '/resultHeader.php');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="style.css" rel="stylesheet" type="text/css" />
-<title>Upload Students Results</title>
-
-</head>
-
-<body>
-<div id="container">
-		<div id="content">
-		<div id="left">
-			<h1>Welcome </h1>
+<div class="container pt-5"> 
+	<div class="row">
+		<div class="col-md-6 mx-auto shadow">
+			<div class="row text-center">
+				<div class="col-6-md mx-auto">
+					<img  src="<?php echo url_for('images/Logo.png');?>">	
+				</div>
+			</div>
 			
-	        <div id="TabbedPanels1" class="TabbedPanels">
-	         
-	          <div class="TabbedPanelsContentGroup">
-	            <div class="TabbedPanelsContent">
-	              <form id="form1" name="form1" method="post" action="annualBroadsheetReal.php">
-	                <table width="50%"  border="1" cellpadding="0" cellspacing="0" align=center>
-
-					<?php 
+			<div class="row text-center">
+				<div class="col-6-md mx-auto">
+					
+				</div>
+			</div>
+              <form id="form1" name="form1" method="post" action="<?php echo url_for('Admin/results/annualBroadsheetReal.php');?>">
+			  <div class="row text-center">
+				<div class="col-6-md mx-auto">
+				<?php 
 						include(SHARED_PATH . '/acadYear.php');
 						include(SHARED_PATH . '/studClass.php');
 						include(SHARED_PATH . '/schArms.php');
 					  ?>
-
-						
-						<tr>
-						<td>
-                          <input type="submit" name="button" id="button" value="Proceed" />
-                        </td>
-                      </tr>
-                    </table>
-                  </form>
-                </div>
+				</div>
 			</div>
+			<div class="row">
+					<div class="col-md-6 mx-auto pb-2">
+						<input type="submit" name="button" id="button" value="Proceed" class="btn btn-primary form-control">
+					</div>
+					<div class="col-md-6">
+						<input type="reset" value="Reset" class="btn btn-warning form-control">
+					</div>
+			</form>
 			</div>
-			</div>
-			</div>
-			</div>
-			
-	</body>
+		</div>
+	</div>
+</body>
 </html>
