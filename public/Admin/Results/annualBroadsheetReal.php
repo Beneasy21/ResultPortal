@@ -30,7 +30,7 @@
 									$Armm = $row['armName'];
 									$academicYearr = $row['acadYrName'];
 
-									echo "<td  valign='buttom' ALIGN = 'CENTER'><strong> <FONT SIZE = '6'> COMMAND SECONDARY SCHOOL - IPAJA </FONT> </br>
+									echo "<td  valign='buttom' ALIGN = 'CENTER'><strong> <FONT SIZE = '6'> COMMAND SECONDARY SCHOOL - LAGOS </FONT> </br>
 											<strong> <FONT SIZE = '4.5'> FORM MASTER'S RECORD  $academicYearr SESSION </FONT></br>
 											Class: $CurrentClasss 	   Arm: $Armm  </br>
 											</strong>";

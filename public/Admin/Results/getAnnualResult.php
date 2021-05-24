@@ -1,5 +1,6 @@
 <?php  
 	require_once('../../../private/initialize.php');
+	require_login();
 
 	$page_title = 'Command: Result Checker';
 	include(SHARED_PATH . '/resultHeader.php');

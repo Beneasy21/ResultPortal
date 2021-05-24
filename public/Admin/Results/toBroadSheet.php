@@ -1,10 +1,11 @@
 <?php  
 	require_once('../../../private/initialize.php');
-
+	require_login();
+	
 	$page_title = 'Command: Broadsheet';
 	include(SHARED_PATH . '/resultHeader.php');
 ?>
-<div class="container pt-5">
+<div class="container pt-5"> 
 	<div class="row">
 		<div class="col-md-6 mx-auto shadow">
 			<div class="row text-center">

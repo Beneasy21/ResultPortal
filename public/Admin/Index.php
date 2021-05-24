@@ -1,60 +1,63 @@
 <?php
-require_once('../../private/initialize.php');
- 
-//sec_session_start();
- 
+    require_once('../../private/initialize.php');
 
+    require_login();
+
+    $admins = find_all_admins();
 ?>
-<!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>Secure Login: Log In</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <link rel="stylesheet" href="css/signin.css" />
-        <script type="text/JavaScript" src="js/sha512.js"></script> 
-        <script type="text/JavaScript" src="js/forms.js"></script> 
-    </head>
-    <body >
-	<div class="container">
-		
-		<div class="row p-2">
-			 <?php
-				if (isset($_GET['error'])) {
-					echo '<p class="error">Error Logging In!</p>';
-				}
-			?> 
+
+<?php 
+    $pageTitle = 'Admins';
+    include(SHARED_PATH . '/resultHeader.php');
+?>
+<?php echo display_session_message(); ?>
+<div class="container">
+  <div class="row">
+	  <div class="col-md-8 mx-auto shadow">
+        <a href="">Back To Results</a>  
+        <a href="<?php echo url_for('/admin/new.php');?>">Add New Admin</a>  
+        <a href="">Add New Admin</a>  
+        <a href="<?php echo url_for('/admin/logout.php');?>">Logout</a>  
+    </div>
+  </div>
+  <div class="row">
+	  <div class="col-md-8 mx-auto shadow">
+        <h4>Welcome <?php 
+        $admin = find_admin_by_id($_SESSION['admin_id']);
+        echo $admin['first_name'] ."  " .$admin['last_name'];?></h4>
+    </div>
+  </div>
+  <div class="row">
+	<div class="col-md-8 mx-auto shadow">
+	  <div class="row text-center">
+		<div class="col-6-md mx-auto">
+	  	  <table class="table table-border">
+            <tr>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Username</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+            <?php while($admin = mysqli_fetch_assoc($admins)) { ?>
+            <tr>
+              <td><?php echo h($admin['id']);?></td>
+              <td><?php echo h($admin['first_name']);?></td>
+              <td><?php echo h($admin['last_name']);?></td>
+              <td><?php echo h($admin['email']);?></td>
+              <td><?php echo h($admin['username']);?></td>
+              <td><a href="<?php echo url_for('/admin/staff/show.php?id='. h(u($admin['id']))) ?>">View</a></td>
+              <td><a href="<?php echo url_for('/admin/staff/edit.php?id='. h(u($admin['id']))) ?>">Edit</a></td>
+              <td><a href="<?php echo url_for('/admin/staff/delete.php?id='. h(u($admin['id']))) ?>">Delete</a></td>
+            </tr>
+          </table>
+
+          <?php } mysqli_free_result($admins); ?>
 		</div>
-		
-		<div >
-			<form class = "form-signin" action="includes/process_login.php" method="post" name="login_form">
-				<div class="row pt-10">
-					<div class="mx-auto">
-						<img class="mb-4 rounded"  src="images/logo.png" alt="" width="150" height="120" >
-					</div>	
-				</div>
-			<div class="row p-2">
-				<Marquee>Welcome to Command Secondary School - Ipaja, Result Portal. Kindly Login if you are an authorized user</marquee>
-			</div>
-			
-				<div class = "form-group" >
-					<label> Email</label>
-					<input class="form-control" type= "text" name="email" >
-				</div>
-				<div class = "form-group" >
-					<label> Password</label>
-					<input class="form-control" type= "password" name="password" >
-				</div>
-				<div class="checkbox mb-3">
-					<label>
-					  <input type="checkbox" value="remember-me"> Remember me
-					</label>
-			    </div>
-				<div class = "form-group" >
-					<input class=" form-control btn btn-primary" type="button" value="Login" onclick="formhash(this.form, this.form.password);" />
-				</div>
-			</form>
-		</div>
-		
-	
-    </body>
-</html>
+	  </div>
+    </div>
+  </div>
+</div>

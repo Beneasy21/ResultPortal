@@ -4,12 +4,12 @@
 <body>
 <?php 
 // Establish Connection with Database
-					$dbconnn = mysqli_connect("localhost","root","","comschoolmand");
+					$dbconnn = mysqli_connect("localhost","root","","commandportal");
 										
 					
 					// Specify the query to execute
 					$sqll = "select * FROM comments WHERE studId = '".$RegNo."' AND acadYr = '".$Session."' AND term = '3'";
-					echo $sqll;
+					//echo $sqll;
 					// Execute query
 					$results1 = mysqli_query($dbconnn,$sqll);
 					// Loop through each records 

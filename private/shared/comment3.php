@@ -5,7 +5,7 @@
 <?php 
 
 // Establish Connection with Database
-					$dbconnn = mysqli_connect("localhost","root","","comschoolmand");
+					$dbconnn = mysqli_connect("localhost","root","","commandportal");
 										
 					
 					// Specify the query to execute
@@ -34,6 +34,11 @@
 					
 					
 					?>
+					<table>
+						<tr>
+							<td height="20"></td>
+						</tr>
+					</table>
 					<table border="1" width="100%"bordercolor="#85A157" align=center>	
 					
 					<tr bgcolor="#B8DEE9" class="style3">	

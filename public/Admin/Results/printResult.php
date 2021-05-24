@@ -1,6 +1,7 @@
 <?php  
 	require_once('../../../private/initialize.php');
-
+	require_login();
+	
 	$page_title = 'Command: Print Result';
 	include(SHARED_PATH . '/resultHeader.php');
 ?>

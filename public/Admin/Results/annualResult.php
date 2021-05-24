@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once('../../../private/initialize.php');
+require_login();
 
 include(SHARED_PATH . '/resultHeader.php');
 
@@ -34,7 +34,7 @@ include(SHARED_PATH . '/resultHeader.php');
 	<table  width=1300 align=center >
 		<tr>
 			<td height="150">
-				<img align="center" width="1300" Height="150"src="<?php echo url_for('/images/Headpix.png');?>" >
+				<img align="center" width="1300" Height="150"src="<?php echo url_for('/images/Headypix.png');?>" >
 			</td>
 		</tr>
 		<tr>
@@ -93,6 +93,7 @@ include(SHARED_PATH . '/resultHeader.php');
 		</thead>
 		<tbody>
 			<?php foreach ($result_array as $row) {
+				$sub = find_subjectName($row['subjects']);
 				$FirstTermObt = $SecondTermObt = $ThirdTermObt = 100;
 				$TotalObt = $FirstTermObt + $SecondTermObt + $ThirdTermObt;
 				$Total = $row["First"] + $row["Second"] + $row["Third"];
@@ -100,7 +101,7 @@ include(SHARED_PATH . '/resultHeader.php');
 				$AverageObt = round($Total / 3, 2);
 			?>
 			<tr bgcolor="#B8DEE9" class="style3">
-				<td><font size="5"><strong><?= $row["subName"] ?></strong></font></td>
+				<td><font size="5"><strong><?= $sub["subName"] ?></strong></font></td>
 				<td><strong><font size="5"><?= $FirstTermObt ?></strong></font></td>
 				<td><strong><font size="5"><?= $row["First"] ?></strong></font></td>
 				<td><strong><font size="5"><?= $SecondTermObt ?></strong></font></td>

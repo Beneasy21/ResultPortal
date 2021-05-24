@@ -1,6 +1,6 @@
 <?php  
-	session_start();
 	require_once('../../../private/initialize.php');
+	require_login();
 
 include(SHARED_PATH . '/general_header.php');
 ?>
@@ -11,8 +11,9 @@ include(SHARED_PATH . '/general_header.php');
 		$Term = h($_POST["Term"]) ?? ''; //Storing Term in $Term variable.
 		$Class = h($_POST["studClass"]) ?? ''; //Storing Class in $Class variable.
 		$Armm = h($_POST["Arm"]) ?? ''; //Storing Arm in $Arm variable.
+		
 
-		//$term = find_termName($Term);
+		$term = find_termName($Term);
 		$student = fetch_student_for_batch($Session, $Term, $Class, $Armm);
 		while($rowStudent = mysqli_fetch_array($student))
 			{
@@ -34,14 +35,14 @@ include(SHARED_PATH . '/general_header.php');
 	<table bgcolor=white width="800" align=center height="1000">
 		<tr>
 			<td height="150">
-				<img width="800" Height="150"src="<?php echo url_for('images/Headpix.png');?>">
+				<img width="800" Height="150"src="<?php echo url_for('images/Headypix.png');?>">
 			</td>
 		</tr>
 		<tr>
 			<td align=center><strong>
 			<?php 
 			
-				//echo $term['termName'] . "Term," . $AcadYr . "Academic Session";
+				echo $term['termName'] . "  Term," . $AcadYr . "Academic Session";
 			?>
 			</strong></td>
 		</tr>
@@ -59,7 +60,7 @@ include(SHARED_PATH . '/general_header.php');
 					
 					<tr><td width = "14%" align="right"><strong><i>House: </i></strong></td><td bgcolor="#B8DEE9" class="style3"><div align="left" class="style9 style6"><strong><?php echo $House;?></strong></div></td>
 					<td width = "14%" align="right"><strong><i>Session:</i></strong></td><td bgcolor="#B8DEE9" class="style3"><div align="left" class="style9 style6"><strong><?php echo $AcadYr;?></strong></div></td>
-					<td width = "10%" align="right"><strong><i>Term:</i></strong></td><td bgcolor="#B8DEE9" class="style3" width="12%"><div align="left" class="style9 style6"><strong><?php echo $Term;?></strong></div></td></tr>
+					<td width = "10%" align="right"><strong><i>Term:</i></strong></td><td bgcolor="#B8DEE9" class="style3" width="12%"><div align="left" class="style9 style6"><strong><?php echo $term['termName'];?></strong></div></td></tr>
 				</table>
 			</td>
 		</tr>
@@ -156,11 +157,14 @@ include(SHARED_PATH . '/general_header.php');
 						<tr >
 							<td colspan = "2" align="right"><strong> Next term begins:</strong></td> <td  Colspan="2"><strong><?php require_once(SHARED_PATH . '/comment2.php');?></strong></td>
 						</tr>
+						
 					</table>
-					
-					<?php require_once(SHARED_PATH . '/comment3.php');?></strong>
+						
+
+					<?php require(SHARED_PATH . '/comment3.php');?></strong>
 					
 					<?php } ?>
+					
 					<tr>
 						<td colspan="8" class="style3"><div align="left" class="style12"> </div></td>
 					</tr>

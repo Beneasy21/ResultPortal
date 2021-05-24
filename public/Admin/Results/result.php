@@ -1,6 +1,7 @@
 <?php
-session_start();
+
 require_once('../../../private/initialize.php');
+require_login();
 
 $page_title = 'Command: Result Details' ;
 include(SHARED_PATH . '/resultHeader.php');

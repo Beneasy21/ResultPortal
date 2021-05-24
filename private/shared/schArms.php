@@ -1,5 +1,5 @@
 <?php
-require_once('../../../private/initialize.php');
+//require_once('../../../private/initialize.php');
 ?>
     <div class="row pb-3">
         <select name="Arm" id="Arm" required="required" class="form-control">

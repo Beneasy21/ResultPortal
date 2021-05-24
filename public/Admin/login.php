@@ -1,135 +1,78 @@
-<?php
-// Initialize the session
-session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: toAddTest.php");
-    exit;
-}
- 
-// Include config file
-require_once "configg.php";
- 
-// Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err = "";
- 
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter username.";
-    } else{
-        $username = trim($_POST["username"]);
+ <?php
+require_once('../../private/initialize.php');
+
+$errors = [];
+$username = '';
+$password = '';
+
+if(is_post_request()) {
+
+  $username = $_POST['username'] ?? '';
+  $password = $_POST['password'] ?? '';
+
+  if(is_blank($username)){
+      $errors[] = "Username cannot be blank";
+  }
+
+  if(is_blank($password)){
+    $errors[] = "Password cannot be blank";
     }
-    
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter your password.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
-    
-    // Validate credentials
-    if(empty($username_err) && empty($password_err)){
-        // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
-                            
-                            // Redirect user to welcome page
-                            header("location: toAddTest.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_err = "The password you entered was not valid.";
-                        }
-                    }
-                } else{
-                    // Display an error message if username doesn't exist
-                    $username_err = "No account found with that username.";
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+
+    //If no error exists
+  if(empty($errors)){
+    $login_failure_msg = "Login Failed";
+      //Fetch admin
+    $admin = find_admin_by_username($username);
+    if($admin){
+            if(password_verify($password,$admin['hashed_password'])){
+            log_in_admin($admin);
+            redirect_to(url_for('/admin/dashboard.php'));
+        }else{
+            //There is username, but no password
+            $errors[] = $login_failure_msg;
         }
-        
-        // Close statement
-        mysqli_stmt_close($stmt);
+    }else{
+        //No username found
+        $errors[] = $login_failure_msg;
     }
+  } 
     
-    // Close connection
-    mysqli_close($link);
+  
 }
 ?>
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
-</head>
-<body>
-<table align="Center" width="500">
-	<tr>
-		<td><img src="images/header.png" width = "500">
-		<td>
-	</tr>
-	<tr>
-	<td align="Center">
-    <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
-            </div>
-          <!--  <p>Don't have an account? <a href="userRegister.php">Sign up now</a>.</p>-->
-        </form>
-    </div>  
-		</td>
-		</tr>
-	</table>
-</body>
-</html>
+
+<?php $page_title = 'Admin Log in'; ?>
+<?php include(SHARED_PATH . '/resultHeader.php'); ?>
+
+<div class="container mx-auto ">
+  <div class="row">
+    <div class="col-md-6 mx-auto shadow m-5 p-5">
+      <div class="row text-center">
+        <div class="col-md-8 mx-auto">
+          <img  src="<?php echo url_for('/images/logo.png') ; ?>" style="height:150px; width:220px">
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-8 mx-auto">
+          <h2>Admin Login</h2>
+	        <p>Please fill in your credentials to login.</p>
+	        		
+	          <form action="<?php echo url_for('admin/login.php'); ?>" method="post">
+	            <div class="form-group ">
+	              <input type="text" name="username" class="form-control"  placeholder="Username">
+	            </div>    
+	            <div class="form-group">
+	              <input type="password" name="password" class="form-control" placeholder="Password">
+	            </div>
+	            
+                <div class="form-group">
+	              <input type="submit" class="form-control btn btn-primary" value="Login">
+	            </div>
+	          </form>		
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+

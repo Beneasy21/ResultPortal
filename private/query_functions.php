@@ -361,7 +361,7 @@ function fetch_student_for_batch($Session, $Term, $Class, $Armm){
 		INNER JOIN tblarm ta ON s.arm = ta.armId 
 		INNER JOIN tblacadYr tay ON s.acadYr = tay.AcadYrId
 		where r.acadYr = '$Session' and r.term = '$Term' and r.resClass = '$Class' AND r.arm = '$Armm'";
-		echo $sql;
+		//echo $sql;
 		$result = mysqli_query($db,$sql);
 		confirm_result_set($result);
 		check_empty_record($result);
@@ -539,6 +539,288 @@ function get_session_name($Session){
 	return $result;	
 }
 
+  // Admins
+
+  // Find all admins, ordered last_name, first_name
+  function find_all_admins() {
+    global $db;
+
+    $sql = "SELECT * FROM admins ";
+    $sql .= "ORDER BY last_name ASC, first_name ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function find_admin_by_id($id) {
+    global $db;
+
+    $sql = "SELECT * FROM admins ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $admin = mysqli_fetch_assoc($result); // find first
+    mysqli_free_result($result);
+    return $admin; // returns an assoc. array
+  }
+
+  function find_admin_by_username($username) {
+    global $db;
+
+    $sql = "SELECT * FROM admins ";
+    $sql .= "WHERE username='" . db_escape($db, $username) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $admin = mysqli_fetch_assoc($result); // find first
+    mysqli_free_result($result);
+    return $admin; // returns an assoc. array
+  }
+
+  function validate_admin($admin) {
+
+    if(is_blank($admin['first_name'])) {
+      $errors[] = "First name cannot be blank.";
+    } elseif (!has_length($admin['first_name'], array('min' => 2, 'max' => 255))) {
+      $errors[] = "First name must be between 2 and 255 characters.";
+    }
+
+    if(is_blank($admin['last_name'])) {
+      $errors[] = "Last name cannot be blank.";
+    } elseif (!has_length($admin['last_name'], array('min' => 2, 'max' => 255))) {
+      $errors[] = "Last name must be between 2 and 255 characters.";
+    }
+
+    if(is_blank($admin['email'])) {
+      $errors[] = "Email cannot be blank.";
+    } elseif (!has_length($admin['email'], array('max' => 255))) {
+      $errors[] = "Last name must be less than 255 characters.";
+    } elseif (!has_valid_email_format($admin['email'])) {
+      $errors[] = "Email must be a valid format.";
+    }
+
+    if(is_blank($admin['username'])) {
+      $errors[] = "Username cannot be blank.";
+    } elseif (!has_length($admin['username'], array('min' => 8, 'max' => 255))) {
+      $errors[] = "Username must be between 8 and 255 characters.";
+    } elseif (!has_unique_username($admin['username'], $admin['id'] ?? 0)) {
+      $errors[] = "Username not allowed. Try another.";
+    }
+
+    if(is_blank($admin['password'])) {
+      $errors[] = "Password cannot be blank.";
+    } elseif (!has_length($admin['password'], array('min' => 12))) {
+      $errors[] = "Password must contain 12 or more characters";
+    } elseif (!preg_match('/[A-Z]/', $admin['password'])) {
+      $errors[] = "Password must contain at least 1 uppercase letter";
+    } elseif (!preg_match('/[a-z]/', $admin['password'])) {
+      $errors[] = "Password must contain at least 1 lowercase letter";
+    } elseif (!preg_match('/[0-9]/', $admin['password'])) {
+      $errors[] = "Password must contain at least 1 number";
+    } elseif (!preg_match('/[^A-Za-z0-9\s]/', $admin['password'])) {
+      $errors[] = "Password must contain at least 1 symbol";
+    }
+
+    if(is_blank($admin['confirm_password'])) {
+      $errors[] = "Confirm password cannot be blank.";
+    } elseif ($admin['password'] !== $admin['confirm_password']) {
+      $errors[] = "Password and confirm password must match.";
+    }
+
+    return $errors;
+  }
+
+  function insert_admin($admin) {
+    global $db;
+
+    $errors = validate_admin($admin);
+    if (!empty($errors)) {
+      return $errors;
+    }
+
+    $hashed_password = password_hash($admin['password'], PASSWORD_BCRYPT);
+
+    $sql = "INSERT INTO admins ";
+    $sql .= "(first_name, last_name, email, username, hashed_password) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $admin['first_name']) . "',";
+    $sql .= "'" . db_escape($db, $admin['last_name']) . "',";
+    $sql .= "'" . db_escape($db, $admin['email']) . "',";
+    $sql .= "'" . db_escape($db, $admin['username']) . "',";
+    $sql .= "'" . db_escape($db, $hashed_password) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+
+    // For INSERT statements, $result is true/false
+    if($result) {
+      return true;
+    } else {
+      // INSERT failed
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function update_admin($admin) {
+    global $db;
+
+    $errors = validate_admin($admin);
+    if (!empty($errors)) {
+      return $errors;
+    }
+
+    $hashed_password = password_hash($admin['password'], PASSWORD_BCRYPT);
+
+    $sql = "UPDATE admins SET ";
+    $sql .= "first_name='" . db_escape($db, $admin['first_name']) . "', ";
+    $sql .= "last_name='" . db_escape($db, $admin['last_name']) . "', ";
+    $sql .= "email='" . db_escape($db, $admin['email']) . "', ";
+    $sql .= "hashed_password='" . db_escape($db, $hashed_password) . "',";
+    $sql .= "username='" . db_escape($db, $admin['username']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $admin['id']) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+
+    // For UPDATE statements, $result is true/false
+    if($result) {
+      return true;
+    } else {
+      // UPDATE failed
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function delete_admin($admin) {
+    global $db;
+
+    $sql = "DELETE FROM admins ";
+    $sql .= "WHERE id='" . db_escape($db, $admin['id']) . "' ";
+    $sql .= "LIMIT 1;";
+    $result = mysqli_query($db, $sql);
+
+    // For DELETE statements, $result is true/false
+    if($result) {
+      return true;
+    } else {
+      // DELETE failed
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  //Start of acad Yr
+  function getAcadYr(){
+	global $db;
+
+	$sql = "SELECT * FROM tblAcadYr ";
+	//echo $sql;
+	$result = mysqli_query($db, $sql);
+	confirm_result_set($result);
+	return $result;
+}
+
+//*************** Getting one Acad Yr to display on show */
+function getAcadYrById($id){
+	global $db;
+
+	$sql = "SELECT * FROM tblAcadYr ";
+	$sql .= "WHERE acadYrId = '".$id."'";
+	$result = mysqli_query($db, $sql);
+	confirm_result_set($result);
+
+	$acadYr = mysqli_fetch_assoc($result);
+	mysqli_free_result($result);
+	return $acadYr;
+}
+
+function addAcadYr($AcadYr){
+	global $db;
+
+	$sql = "INSERT INTO tblAcadYr(acadYrName, acadYrDesc) 
+	VALUES ('".$AcadYr['longName']."', '".$AcadYr['shortName']."' )";
+
+	$result = mysqli_query($db,$sql);
+	if($result){
+		return true;
+	}else{
+	   echo  mysqli_error($db);
+	   db_disconnect($db);
+	   exit;
+	}
+}
+
+//********************* Delete one Acad Yr at a time */
+function deleteAcadYrById($id){
+	global $db;
+
+	$sql = "DELETE FROM tblAcadYr ";
+	$sql .= "WHERE acadYrId = '".$id."' ";
+	$sql .= "LIMIT 1";
+
+	$res = mysqli_query($db,$sql);
+
+	if($res){
+		return true;
+	} else {
+		echo mysqli_error($db);
+		db_disconnect($db);
+		exit;
+	}
+}
+//*********************** Validating Acad Year ************
+function validateAcadYr($AcadYr){
+	$errors = [];
+
+	$longName = $AcadYr['longName'];
+	if(is_blank($longName)){
+		$errors[] = "The Full Name can never be Empty";
+	}elseif(!has_length($longName, ['min' => 2, 'max' => 255])){
+		$errors[] = "The Abbreviation can never be Empty";
+	}
+
+	$shortName = $AcadYr['shortName'];
+	if(is_blank($shortName)){
+		$errors[] = "The Abbreviation can never be Empty";
+	}elseif(!has_length($shortName, ['min' => 2, 'max' => 255])){
+		$errors[] = "The Abbreviation must be more than 2 ";
+	}
+	return $errors;
+}
+
+
+//************ Updating AcadYr ************************ */
+function updateAcadYr($AcadYr){
+	global $db;
+
+	$errors = validateAcadYr($AcadYr);
+	if(!empty($errors)){
+		return $errors;
+	}
+
+	$sql = "UPDATE tblAcadYr SET ";
+	$sql .= "acadYrName='" .$AcadYr['longName']."',"; 
+	$sql .= "acadYrDesc='" .$AcadYr['shortName']."'"; 
+	$sql .= "WHERE acadYrId='".$AcadYr['acadYrId']."'";
+	$sql .= " LIMIT 1";
+	echo $sql;
+	$result = mysqli_query($db, $sql);
+	if($result){
+		return true;
+	}else{
+		//Update failed
+		echo mysqli_error($db);
+		db_disconnect($db);
+		exit;
+	}
+
+}
+// ---------------------------------- End of AAcademic Year --------------------
+
 
 //Get Broadsheets Termly
 function get_broadsheet_name($Term, $Arm, $academicYear, $CurrentClass, $subjects){
@@ -563,14 +845,14 @@ function get_broadsheet($Term, $Arm, $academicYear, $CurrentClass){
 	global $db;
 
 	$sql = "SEt @@group_concat_max_len = 1024*300";
-	mysqli_query($db,$sql);
+	$result = mysqli_query($db,$sql);
 	$sql = "SELECT GROUP_CONCAT(DISTINCT CONCAT('Sum(if(r.subjects = ''',`subjects`,''',r.ca1 + r.ca2,0)) as `',`subName`,'-CA`,
 	     			Sum(if(r.subjects = ''',`subjects`,''',(r.exam),0)) as `',`subName`,'-Exam`,
 					Sum(if(r.subjects = ''',`subjects`,''',(r.examTotal),0)) as `',`subName`,'-Total`')) subjects 
 			FROM results 
 			INNER JOIN tblsubjects tbs ON results.subjects = tbs.subId
 			WHERE results.resClass ='".$CurrentClass."' AND results.arm = '".$Arm."' AND results.term = '".$Term."'  AND results.acadYr = '".$academicYear."'";
-	
+	//echo $sql;
 	$result = mysqli_query($db,$sql);
 	confirm_result_set($result);
 	return $result;
@@ -585,8 +867,7 @@ function get_annual_broadsheet_name($Arm, $academicYear, $CurrentClass, $subject
 			FROM results r 
 			inner join students s on r.studId = s.studId 
 			WHERE r.resClass = '".$CurrentClass."' AND r.arm = '".$Arm."' AND r.acadYr = '".$academicYear."'
-			group by r.resClass,  r.arm, r.acadYr,s.studName
-			";
+			group by r.resClass,  r.arm, r.acadYr,s.studName";
 
 			$result = mysqli_query($db,$sql);
 			confirm_result_set($result);
@@ -613,3 +894,4 @@ function get_annual_broadsheet($Arm, $academicYear, $CurrentClass){
 	return $result;
 	
 }
+

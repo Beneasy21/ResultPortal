@@ -1,5 +1,6 @@
 <?php 
     ob_start();// Turning on output buffering
+    session_start();
 
     define("PRIVATE_PATH", dirname(__FILE__));
     define("PROJECT_PATH", dirname(PRIVATE_PATH));
@@ -19,5 +20,6 @@
     
 
     $db = db_connect(); 
+    $errors = [];
 ?>
 

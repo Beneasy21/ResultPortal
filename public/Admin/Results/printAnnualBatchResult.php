@@ -1,6 +1,7 @@
 <?php
-session_start();
 require_once('../../../private/initialize.php');
+require_login();
+
 ?>
 <!DOCTYPE>
 <html lang="en">
@@ -43,7 +44,7 @@ $Class = h($_POST["studClass"]); //Storing Class in $Class variable.
 						
 	<table  width=1300 align=center >
 		<tr>
-		<td class="text-center" height="150"><img width="800" Height="150"src="<?php echo url_for('/images/Headpix.png');?>"></td>
+		<td class="text-center" height="150"><img width="800" Height="150"src="<?php echo url_for('/images/Headypix.png');?>"></td>
 		</tr>
 		<tr>
 			<td height="150">
