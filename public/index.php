@@ -1,7 +1,7 @@
 <?php 
 
 include('../private/initialize.php');
-include(SHARED_PATH . '/resultHeader.PHP')
+include(SHARED_PATH . '/resultHeader.php')
 
 ?>
 

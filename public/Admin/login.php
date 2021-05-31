@@ -1,6 +1,8 @@
  <?php
 require_once('../../private/initialize.php');
 
+//var_dump($_POST['username'], $_POST['password']);
+
 $errors = [];
 $username = '';
 $password = '';
@@ -18,6 +20,9 @@ if(is_post_request()) {
     $errors[] = "Password cannot be blank";
     }
 
+   
+
+
     //If no error exists
   if(empty($errors)){
     $login_failure_msg = "Login Failed";
@@ -26,7 +31,7 @@ if(is_post_request()) {
     if($admin){
             if(password_verify($password,$admin['hashed_password'])){
             log_in_admin($admin);
-            redirect_to(url_for('/admin/dashboard.php'));
+            redirect_to(url_for('/admin/index.php'));
         }else{
             //There is username, but no password
             $errors[] = $login_failure_msg;
@@ -37,7 +42,7 @@ if(is_post_request()) {
     }
   } 
     
-  
+ 
 }
 ?>
 
@@ -56,7 +61,7 @@ if(is_post_request()) {
         <div class="col-md-8 mx-auto">
           <h2>Admin Login</h2>
 	        <p>Please fill in your credentials to login.</p>
-	        		
+	        <?php echo display_errors($errors)		;?>
 	          <form action="<?php echo url_for('admin/login.php'); ?>" method="post">
 	            <div class="form-group ">
 	              <input type="text" name="username" class="form-control"  placeholder="Username">
