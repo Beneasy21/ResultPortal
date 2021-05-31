@@ -1,12 +1,10 @@
 <?php
     require_once('../../private/initialize.php');
 
-   session_start();
-
-    require_login();
+    require_student_login();
 
     //$studId = h(u($_SESSION['stud_id'])) ?? '1000000';
-    $studId = h($_SESSION['studId']);
+    $studId = h($_SESSION['studId']) ?? '';
 
     $student = fetch_student_by_id($studId);
     $studClass = find_className($student['currentClass']);

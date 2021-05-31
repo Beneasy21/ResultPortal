@@ -1,4 +1,0 @@
-UPDATE comments SET `acadYr` = 2 WHERE `acadYr` ="2018/2019";
-UPDATE comments SET `term` = 1 WHERE `term` ="First";
-UPDATE comments SET `term` = 2 WHERE `term` ="Second";
-UPDATE comments SET `term` = 3 WHERE `term` ="Third";

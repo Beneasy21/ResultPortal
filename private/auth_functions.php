@@ -42,39 +42,40 @@
 
 
 
-
-
-
-
-
-
-//========     Student Login authentication     ==================
-/*  function log_in_student($student) {
+  //Students Login Area
+  function log_in_student($student) {
   // Renerating the ID protects the admin from session fixation.
-    session_regenerate_id();
-    $_SESSION['studId'] = $student['studId'];
-    $_SESSION['lastLogin'] = time();
-    $_SESSION['username'] = $student['studId'];
-    return true;
-  }
+  session_regenerate_id();
+  $_SESSION['studId'] = $student['studId'];
+  $_SESSION['last_login'] = time();
+  $_SESSION['username'] = $student['username'];
+  return true;
+}
 
-
-  function log_out_student(){
+  function log_out_student() {
+    // Renerating the ID protects the admin from session fixation.
     unset($_SESSION['studId']);
-    unset($_SESSION['lastLogin']);
+    unset($_SESSION['last_login']);
     unset($_SESSION['username']);
     return true;
   }
 
-  function is_logged_in(){
+  function is_student_logged_in() {
+    // Having a admin_id in the session serves a dual-purpose:
+    // - Its presence indicates the admin is logged in.
+    // - Its value tells which admin for looking up their record.
     return isset($_SESSION['studId']);
   }
 
-  function require_login(){
-    if(!is_logged_in()){
+  // Call require_login() at the top of any page which needs to
+  // require a valid login before granting acccess to the page.
+  function require_student_login() {
+    if(!is_student_logged_in()) {
       redirect_to(url_for('/students/login.php'));
+    } else {
+      // Do nothing, let the rest of the page proceed
     }
   }
 
-*/
+
 ?>

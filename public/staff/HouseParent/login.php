@@ -1,51 +1,7 @@
 
 <?php
-    require_once('../../private/initialize.php');
-    //session_start();
-
-    	$errors = [];
-    	$username = '';
-    	$password = '';
-
-    if(is_post_request()){
-    	$username = h($_POST['username']);
-    	$password = h($_POST['password']);
-
-    	if(is_blank($username)){
-    		//if username is empty
-    		$errors[] = "Username cannot be blank";
-    	}
-
-    	if(is_blank($password)){
-    		//if password is empty
-    		$errors[] = "password cannot be blank";
-    	}
-    	//If no errors
-    	if(empty($errors)){
-    		//Error message variable
-    		$loginFailed = "Login was unsuccessful";
-
-    		$student = fetch_studentLogin_by_id($username);
-    		if($student){
-
-    			if(password_verify($password, $student['studPass'])){
-    				//password matches
-					log_in_student($student);
-					redirect_to(url_for('students/index.php'));    				
-    			} else {
-    				//Username present, Password not matched
-    				$errors[]= $loginFailed;
-    			}
-    		} else {
-    			//No record was recovered
-    			$errors[]= $loginFailed;
-    			redirect_to(url_for('students/login.php'));
-    		}
-
-
-    	}
-
-    }
+    require_once('../../../private/initialize.php');
+    session_start();
 
 ?>
 
@@ -59,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('stylesheets/myStyles.css'); ?>" />
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('stylesheets/custom.css'); ?>" />
 
-    <title>Student Login</title>
+    <title>Document</title>
 </head>
 <body class="">
     <div class="container mx-auto">
@@ -72,10 +28,9 @@
 	    			<div class="text-center">
     		<img  src="<?php echo url_for('/images/logo.png') ; ?>" style="height:150px; width:220px">
 	    	</div>
-	    			<h2>Student's Login</h2>
+	    			<h2>Staff Login Area</h2>
 	        		<p>Please fill in your credentials to login.</p>
-	        		
-	        		<form action="<?php echo url_for('students/login.php'); ?>" method="post">
+	        		<form action="<?php echo url_for('staff/login.php'); ?>" method="post">
 	            		<div class="form-group ">
 	                		<input type="text" name="username" class="form-control"  placeholder="Registration number">
 	            		</div>    

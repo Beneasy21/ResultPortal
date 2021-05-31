@@ -69,6 +69,19 @@
           return '<div id="message">' . h($msg) . '</div>';
         }
       }
+
+      function encrypt_it($data){
+        
+        $dec_pin = openssl_encrypt($data, "AES-128-ECB", PINKEY);
+        return $dec_pin;
+      }
+
+      function decrypt_it($data){
+        
+        $dec_pin = openssl_decrypt($data, "AES-128-ECB", PINKEY);
+
+        return $dec_pin;
+      }
       
 
 

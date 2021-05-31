@@ -1,7 +1,7 @@
 <?php
     require_once('../../private/initialize.php');
-    session_start();
-    require_login();
+    //session_start();
+    //require_student_login();
     //$studId = h(u($_SESSION['stud_id'])) ?? '1000000';
     $studId = h($_SESSION['studId']);
 

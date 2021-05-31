@@ -2,7 +2,7 @@
 //require_once('../../../private/initialize.php');
 ?>
 
-    <div class="row pb-2">
+    
         <select name="acadYr" id="acadYr" required="required" class="form-control">
 			<option value=''>Choose Academic Year</option>
             <?php
@@ -14,5 +14,5 @@
                 }
             ?>
         </select>       
-    </div>
+    
 

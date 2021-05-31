@@ -1,7 +1,7 @@
 <?php
  //require_once('../../../private/initialize.php');
 ?>
-    <div class="row pb-2">
+   
         <select name="Term" id="Term" required="required" class="form-control">
             <option value=''>Choose a Term</option>
             <?php
@@ -14,4 +14,4 @@
                 }
             ?>
         </select>       
-    </div>
+

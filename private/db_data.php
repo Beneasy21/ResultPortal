@@ -8,6 +8,8 @@
     define("CAN_REGISTER", "any");
     define("DEFAULT_ROLE", "member");
     
+    define("PINKEY", "12.;522438894PYBNTRREDogThEi");
+
     define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
 ?>
 

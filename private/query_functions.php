@@ -2,6 +2,47 @@
 
 //Get a stud Login 
 //For one login per student
+
+function insert_cards($card) {
+    global $db;
+    
+    //$hashed_pin = password_hash($card['pin'], PASSWORD_BCRYPT);
+
+    $hashed_pin = encrypt_it($card['pin']);
+
+    $sql = "INSERT INTO tblpin ";
+    $sql .= "(serial, hashed_pin) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $card['sNo']) . "',";
+    $sql .= "'" . db_escape($db, $hashed_pin) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+
+    // For INSERT statements, $result is true/false
+    if($result) {
+      return true;
+    } else {
+      // INSERT failed
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+
+function read_cards() {
+    global $db;
+
+    $sql = "SELECT * FROM tblpin ";
+    $sql .= "ORDER BY id ASC";
+
+    echo $sql;
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    
+    return $result;
+  }
+
 function fetch_studentLogin_by_id($id){
 	global $db;
 
